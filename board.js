@@ -13,18 +13,13 @@ var game = {
 
   winning_move : function(){
     console.log("can I win");
-    for(var i=0; i < 9; i++){
+    for(var i=0; i < 8; i++){
       win =$.map(WINNING_COMBO[i], function(value, key){return value;});
-      console.log("difference")
       to_win = win.diff(computer_array)
-      console.log("openBoard")
-      console.log($.inArray(to_win,openBoard))
-
-      if($.inArray(to_win,openBoard) == -1 && to_win == 1){
+      if($.inArray(to_win,openBoard) != -1 && to_win == 1){
         game.move(to_win[0])
         alert("The computer won!")
-
-      }
+      };
     };
   },
 
@@ -35,6 +30,7 @@ var game = {
 
   defend : function(player){
     console.log("can the player win")
+
   },
 
   finish : function (player) {
@@ -46,8 +42,9 @@ var game = {
     computer.push("2");
     $("#3").append("O");
     computer_array = $.map(computer, function(value, key){return value;});
-    game.winning_move(player);
-    game.defend(player);
+    game.winning_move();
+    console.log("next step")
+    game.defend();
 
     removeSq(openBoard, "3");
     console.log(computer[0]);
