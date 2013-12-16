@@ -55,7 +55,7 @@ var game = {
     console.log("Is a fork possible?")
     for(var i=0; i < 8; i++){
       var fork =$.map(WINNING_COMBO[i], function(value, key){return value;});
-      var to_fork = fork.diff(computer_array);
+
 
       for(var j=0; j <= computer_array.length; j++){
         if($.inArray(computer_array[j],WINNING_COMBO[i]) != -1 && $.inArray(player_array[j],WINNING_COMBO[i]) == -1 && $.inArray(player_array[j + 1],WINNING_COMBO[i]) == -1){
@@ -64,15 +64,18 @@ var game = {
         };
       };
     };
-    if(possible_fork[0] != null){
-      array = match(possible_fork);
 
+    if(possible_fork[0] != null){
+      var array = match(possible_fork);
       if(array != null){
-        fork_options = array.diff(player_array);
-        console.log("fork Options")
-        console.log(fork_options);
-        game.move(fork_options[0]);
-        return true
+        var to_fork = array.diff(player_array)
+
+        if(to_fork[0] != null){
+          console.log("fork Options")
+          console.log(to_fork);
+          game.move(to_fork[0]);
+          return true
+        };
       };
     };
   },
