@@ -11,6 +11,13 @@ var game = {
   winner : 'none',
   liveBoard : true,
 
+  finished : function(){
+    if(openBoard.length < 1){
+      alert("Tie Game!");
+      game.liveBoard = false;
+    };
+  },
+
   winning_move : function(){
     console.log("can I win");
     for(var i=0; i < 8; i++){
@@ -32,6 +39,7 @@ var game = {
     removeSq(openBoard, choice);
     computer.push(choice);
     computer_move = true;
+    game.finished();
 
   },
 
@@ -126,6 +134,7 @@ var game = {
           newMove = event.target.id;
           player.push(newMove);
           removeSq(openBoard, newMove)
+          game.finished();
           player_array = $.map(player, function(value, key){return value;});
           win_check(player_array);
           if(game.liveBoard == true){
@@ -137,9 +146,7 @@ var game = {
     });
   },
 
-  finished : function(){
 
-  };
 
 };
 
