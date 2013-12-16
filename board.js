@@ -115,8 +115,6 @@ var game = {
       if(game.fork()){break};
       if(game.bestMove()){break};
     };
-
-
   },
 
   sq_Click : function(){
@@ -139,7 +137,9 @@ var game = {
     });
   },
 
+  finished : function(){
 
+  };
 
 };
 
