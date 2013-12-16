@@ -119,15 +119,18 @@ var game = {
   sq_Click : function(){
     $("td").click(function(event){
       if(game.liveBoard==true){
-        $(this).append("X")
-        newMove = event.target.id;
-        player.push(newMove);
-        removeSq(openBoard, newMove)
-        player_array = $.map(player, function(value, key){return value;});
-        win_check(player_array);
-        if(game.liveBoard == true){
-          computer_move = false;
-          game.computerMove();
+        console.log("what is in this spot?")
+        if($(this).text() == ""){
+          $(this).append("X")
+          newMove = event.target.id;
+          player.push(newMove);
+          removeSq(openBoard, newMove)
+          player_array = $.map(player, function(value, key){return value;});
+          win_check(player_array);
+          if(game.liveBoard == true){
+            computer_move = false;
+            game.computerMove();
+          };
         };
       };
     });
