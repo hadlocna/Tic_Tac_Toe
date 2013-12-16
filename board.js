@@ -87,7 +87,6 @@ var game = {
       console.log("corner")
       game.move(choice);
       return true;
-
     }
     else if(true){
       console.log("open")
@@ -111,9 +110,6 @@ var game = {
 
   sq_Click : function(){
     $("td").click(function(event){
-      console.log("liveBoard")
-      console.log(game.liveBoard)
-      console.log("---------")
       if(game.liveBoard==true){
         $(this).append("X")
         newMove = event.target.id;
@@ -159,6 +155,8 @@ var playGame = function(){
   computer = [];
   openBoard = ["1","2","3","4","5","6","7","8","9"];
   if((Math.floor(Math.random() * 2) + 1) == 2){
+    player_array = $.map(player, function(value, key){return value;});
+    computer_move = false;
     game.computerMove();
   };
   game.sq_Click();
@@ -178,8 +176,8 @@ function to_array(object){
 
 function match(object) {
   console.log("In Match")
-  console.log(to_array(object))
-  var array = to_array(object)
+  console.log(to_array(object).diff(computer_array))
+  var array = to_array(object).diff(computer_array)
   var sorted_array = array.sort();
   var results = [];
   for (var i = 0; i < array.length - 1; i++) {
