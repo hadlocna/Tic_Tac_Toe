@@ -14,41 +14,46 @@ var game = {
   winning_move : function(){
     console.log("can I win");
     for(var i=0; i < 8; i++){
-      win =$.map(WINNING_COMBO[i], function(value, key){return value;});
-      to_win = win.diff(computer_array)
-      if($.inArray(to_win,openBoard) != -1 && to_win == 1){
-        game.move(to_win[0])
-        alert("The computer won!")
+      var win =$.map(WINNING_COMBO[i], function(value, key){return value;});
+      var to_win = win.diff(computer_array);
+      if($.inArray(to_win[0],openBoard) != -1 && to_win.length == 1){
+        game.move(to_win[0]);
+        alert("The computer won!");
       };
     };
   },
 
   move : function(choice){
     $("#" + choice).append("O");
+    removeSq(openBoard, choice);
   },
 
 
-  defend : function(player){
+  defend : function(){
     console.log("can the player win")
-
+    for(var i=0; i < 8; i++){
+      var defend =$.map(WINNING_COMBO[i], function(value, key){return value;});
+      var to_defend = defend.diff(player_array);
+      if($.inArray(to_defend[0],openBoard) != -1 && to_defend.length == 1){
+        game.move(to_defend[0])
+        break
+      };
+    };
   },
 
   finish : function (player) {
 
   },
 
-  computerMove : function (player){
-    computer.push("3");
-    computer.push("2");
-    $("#3").append("O");
+  computerMove : function (){
+    // computer.push("3");
+    // computer.push("2");
+    // $("#3").append("O");
     computer_array = $.map(computer, function(value, key){return value;});
     game.winning_move();
-    console.log("next step")
     game.defend();
-
-    removeSq(openBoard, "3");
     console.log(computer[0]);
-    console.log(openBoard[1]);
+
   },
 
   sq_Click : function(player){
@@ -58,8 +63,8 @@ var game = {
       player.push(newMove);
       removeSq(openBoard, newMove)
       console.log(player[0]);
-      console.log(openBoard[0]);
-      game.computerMove(player);
+      player_array = $.map(player, function(value, key){return value;});
+      game.computerMove();
     });
   },
 
