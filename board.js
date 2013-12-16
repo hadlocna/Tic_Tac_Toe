@@ -41,7 +41,7 @@ var game = {
     for(var i=0; i < 8; i++){
       var defend =$.map(WINNING_COMBO[i], function(value, key){return value;});
       var to_defend = defend.diff(player_array);
-      if($.inArray(to_defend[0],openBoard) != -1 && to_defend.length == 1){
+      if($.inArray(to_defend[0],openBoard) != -1 && to_defend.length == 1 ){
         console.log("defend")
         game.move(to_defend[0])
         return true;
@@ -65,17 +65,25 @@ var game = {
       };
     };
     if(possible_fork[0] != null){
-      match(possible_fork);
+      array = match(possible_fork);
+
+      if(array != null){
+        fork_options = array.diff(player_array);
+        console.log("fork Options")
+        console.log(fork_options);
+        game.move(fork_options[0]);
+        return true
+      };
     };
   },
 
   bestMove : function(){
     console.log("Best Choice");
 
-    var corner = ["1","3","7","9"];
+    var side = ["2","4","6","8"];
     for(var i=0; i < 3; i++){
-      if($.inArray(corner[i], openBoard) != -1){
-        var choice = (corner[i]);
+      if($.inArray(side[i], openBoard) != -1){
+        var choice = (side[i]);
       };
     };
     if($.inArray("5", openBoard) != -1){
