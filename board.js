@@ -16,14 +16,12 @@ var game = {
     for(var i=0; i < 8; i++){
       var win =$.map(WINNING_COMBO[i], function(value, key){return value;});
       var to_win = win.diff(computer_array);
-      // console.log(computer_array)
-      // console.log("length")
-      // console.log(to_win.length)
-      // console.log($.inArray(to_win[0],openBoard))
-      // console.log("-------")
       if($.inArray(to_win[0],openBoard) != -1 && to_win.length == 1){
         game.move(to_win[0]);
         alert("The computer won!");
+        game.liveBoard = false;
+
+        return true
       };
     };
     return false
@@ -77,8 +75,6 @@ var game = {
         var choice = (corner[i]);
       };
     };
-    // console.log(openBoard)
-    // console.log()
     if($.inArray("5", openBoard) != -1){
       console.log("middle")
       game.move("5");
@@ -103,12 +99,8 @@ var game = {
   },
 
   computerMove : function (){
-    // console.log("computer")
-    // console.log(computer)
     computer_array = $.map(computer, function(value, key){return value;});
-    // console.log(computer_array)
-    console.log(computer_move)
-    while(computer_move == false){
+      while(computer_move == false){
       if(game.winning_move()){break};
       if(game.defend()){break};
       if(game.fork()){break};
@@ -118,22 +110,31 @@ var game = {
 
   },
 
-  sq_Click : function(player){
+  sq_Click : function(){
     $("td").click(function(event){
-      $(this).append("X")
-      newMove = event.target.id;
-      player.push(newMove);
-      removeSq(openBoard, newMove)
-      // console.log(player[0]);
-      player_array = $.map(player, function(value, key){return value;});
-      computer_move = false;
-      game.computerMove();
+      console.log("liveBoard")
+      console.log(game.liveBoard)
+      console.log("---------")
+      if(game.liveBoard==true){
+        $(this).append("X")
+        newMove = event.target.id;
+        player.push(newMove);
+        removeSq(openBoard, newMove)
+        player_array = $.map(player, function(value, key){return value;});
+        computer_move = false;
+        game.computerMove();
+      };
     });
   },
 
 
 
 };
+
+function win_check(moves){
+
+
+}
 
 function removeSq(openBoard, newMove){
   for(var i in openBoard){
@@ -149,7 +150,7 @@ var playGame = function(){
   player = [];
   computer = [];
   openBoard = ["1","2","3","4","5","6","7","8","9"];
-  game.sq_Click(player);
+  game.sq_Click();
 
 };
 
