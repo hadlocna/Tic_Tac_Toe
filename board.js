@@ -19,13 +19,20 @@ var game = {
       if($.inArray(to_win[0],openBoard) != -1 && to_win.length == 1){
         game.move(to_win[0]);
         alert("The computer won!");
+        game.liveBoard = false;
+
+        return true
       };
     };
+    return false
   },
 
   move : function(choice){
     $("#" + choice).append("O");
     removeSq(openBoard, choice);
+    computer.push(choice);
+    computer_move = true;
+
   },
 
 
@@ -35,36 +42,90 @@ var game = {
       var defend =$.map(WINNING_COMBO[i], function(value, key){return value;});
       var to_defend = defend.diff(player_array);
       if($.inArray(to_defend[0],openBoard) != -1 && to_defend.length == 1){
+        console.log("defend")
         game.move(to_defend[0])
-        break
+        return true;
       };
+    };
+    return false;
+  },
+
+  fork : function(){
+    var possible_fork = [];
+    console.log("Is a fork possible?")
+    for(var i=0; i < 8; i++){
+      var fork =$.map(WINNING_COMBO[i], function(value, key){return value;});
+      var to_fork = fork.diff(computer_array);
+
+      for(var j=0; j <= computer_array.length; j++){
+        if($.inArray(computer_array[j],WINNING_COMBO[i]) != -1 && $.inArray(player_array[j],WINNING_COMBO[i]) == -1 && $.inArray(player_array[j + 1],WINNING_COMBO[i]) == -1){
+          possible_fork.push(WINNING_COMBO[i]);
+          console.log("possible fork")
+        };
+      };
+    };
+    if(possible_fork[0] != null){
+      match(possible_fork);
     };
   },
 
-  finish : function (player) {
+  bestMove : function(){
+    console.log("Best Choice");
 
+    var corner = ["1","3","7","9"];
+    for(var i=0; i < 3; i++){
+      if($.inArray(corner[i], openBoard) != -1){
+        var choice = (corner[i]);
+      };
+    };
+    if($.inArray("5", openBoard) != -1){
+      console.log("middle")
+      game.move("5");
+      return true;
+    }
+    else if(choice){
+      console.log("corner")
+      game.move(choice);
+      return true;
+
+    }
+    else if(true){
+      console.log("open")
+      game.move(openBoard[0]);
+      return true;
+
+    };
   },
 
   computerMove : function (){
-    // computer.push("3");
-    // computer.push("2");
-    // $("#3").append("O");
     computer_array = $.map(computer, function(value, key){return value;});
-    game.winning_move();
-    game.defend();
-    console.log(computer[0]);
+      while(computer_move == false){
+      if(game.winning_move()){break};
+      if(game.defend()){break};
+      if(game.fork()){break};
+      if(game.bestMove()){break};
+    };
+
 
   },
 
-  sq_Click : function(player){
+  sq_Click : function(){
     $("td").click(function(event){
-      $(this).append("X")
-      newMove = event.target.id;
-      player.push(newMove);
-      removeSq(openBoard, newMove)
-      console.log(player[0]);
-      player_array = $.map(player, function(value, key){return value;});
-      game.computerMove();
+      console.log("liveBoard")
+      console.log(game.liveBoard)
+      console.log("---------")
+      if(game.liveBoard==true){
+        $(this).append("X")
+        newMove = event.target.id;
+        player.push(newMove);
+        removeSq(openBoard, newMove)
+        player_array = $.map(player, function(value, key){return value;});
+        win_check(player_array);
+        if(game.liveBoard == true){
+          computer_move = false;
+          game.computerMove();
+        };
+      };
     });
   },
 
@@ -72,11 +133,22 @@ var game = {
 
 };
 
+function win_check(moves){
+  for(var i=0; i < 8; i++){
+    var win =$.map(WINNING_COMBO[i], function(value, key){return value;});
+    var to_win = win.diff(moves);
+    if(to_win.length == 0){
+      alert("The player won!");
+      game.liveBoard = false;
+    };
+  };
+};
+
 function removeSq(openBoard, newMove){
   for(var i in openBoard){
     if(openBoard[i]==newMove){
       openBoard.splice(i,1);
-        break;
+      break;
     };
   };
 };
@@ -86,7 +158,7 @@ var playGame = function(){
   player = [];
   computer = [];
   openBoard = ["1","2","3","4","5","6","7","8","9"];
-  game.sq_Click(player);
+  game.sq_Click();
 
 };
 
@@ -96,3 +168,26 @@ $(document).ready(function() {
   playGame();
 
 });
+
+function to_array(object){
+  return $.map(object, function(value, key){return value;});
+};
+
+function match(object) {
+  console.log("In Match")
+  console.log(to_array(object))
+  var array = to_array(object)
+  var sorted_array = array.sort();
+  var results = [];
+  for (var i = 0; i < array.length - 1; i++) {
+    if (sorted_array[i + 1] == sorted_array[i]) {
+      results.push(sorted_array[i]);
+    };
+  };
+  console.log("results")
+  console.log(results)
+  if(results.length > 0){
+    return results
+  };
+
+};
