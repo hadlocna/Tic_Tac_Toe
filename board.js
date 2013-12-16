@@ -51,19 +51,22 @@ var game = {
   },
 
   fork : function(){
-    // var possible_fork = [];
-    // console.log("Is a fork possible?")
-    // for(var i=0; i < 8; i++){
-    //   var fork =$.map(WINNING_COMBO[i], function(value, key){return value;});
-    //   var to_fork = fork.diff(computer_array);
+    var possible_fork = [];
+    console.log("Is a fork possible?")
+    for(var i=0; i < 8; i++){
+      var fork =$.map(WINNING_COMBO[i], function(value, key){return value;});
+      var to_fork = fork.diff(computer_array);
 
-    //   for(var j=0; j < computer_array.length; j++){
-    //     if($.inArray(computer_array[j],WINNING_COMBO[i]) != -1 && $.inArray(player_array[j],WINNING_COMBO[i]) == -1 && $.inArray(player_array[j + 1],WINNING_COMBO[i]) == -1){
-    //       possible_fork.push(WINNING_COMBO[i]);
-    //     };
-    //   };
-    //   match(possible_fork);
-    // };
+      for(var j=0; j <= computer_array.length; j++){
+        if($.inArray(computer_array[j],WINNING_COMBO[i]) != -1 && $.inArray(player_array[j],WINNING_COMBO[i]) == -1 && $.inArray(player_array[j + 1],WINNING_COMBO[i]) == -1){
+          possible_fork.push(WINNING_COMBO[i]);
+          console.log("possible fork")
+        };
+      };
+    };
+    if(possible_fork[0] != null){
+      match(possible_fork);
+    };
   },
 
   bestMove : function(){
@@ -167,13 +170,24 @@ $(document).ready(function() {
 });
 
 function to_array(object){
-  console.log("in array")
-  $.map(object, function(value, key){return value;});
+  return $.map(object, function(value, key){return value;});
 };
 
 function match(object) {
   console.log("In Match")
-  console.log(object)
-  var array = to_array(object);
-  console.log(array)
+  console.log(to_array(object))
+  var array = to_array(object)
+  var sorted_array = array.sort();
+  var results = [];
+  for (var i = 0; i < array.length - 1; i++) {
+    if (sorted_array[i + 1] == sorted_array[i]) {
+      results.push(sorted_array[i]);
+    };
+  };
+  console.log("results")
+  console.log(results)
+  if(results.length > 0){
+    return results
+  };
+
 };
