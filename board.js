@@ -94,10 +94,6 @@ var game = {
     };
   },
 
-  finish : function (player) {
-
-  },
-
   computerMove : function (){
     computer_array = $.map(computer, function(value, key){return value;});
       while(computer_move == false){
@@ -121,8 +117,11 @@ var game = {
         player.push(newMove);
         removeSq(openBoard, newMove)
         player_array = $.map(player, function(value, key){return value;});
-        computer_move = false;
-        game.computerMove();
+        win_check(player_array);
+        if(game.liveBoard == true){
+          computer_move = false;
+          game.computerMove();
+        };
       };
     });
   },
@@ -132,9 +131,15 @@ var game = {
 };
 
 function win_check(moves){
-
-
-}
+  for(var i=0; i < 8; i++){
+    var win =$.map(WINNING_COMBO[i], function(value, key){return value;});
+    var to_win = win.diff(moves);
+    if(to_win.length == 0){
+      alert("The player won!");
+      game.liveBoard = false;
+    };
+  };
+};
 
 function removeSq(openBoard, newMove){
   for(var i in openBoard){
