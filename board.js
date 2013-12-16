@@ -158,6 +158,9 @@ var playGame = function(){
   player = [];
   computer = [];
   openBoard = ["1","2","3","4","5","6","7","8","9"];
+  if((Math.floor(Math.random() * 2) + 1) == 2){
+    game.computerMove();
+  };
   game.sq_Click();
 
 };
