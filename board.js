@@ -112,9 +112,9 @@ var game = {
           newMove = event.target.id;
           player.push(newMove);
           removeSq(openBoard, newMove)
-          game.finished();
           player_array = $.map(player, function(value, key){return value;});
-          win_check(player_array);
+          if(win_check(player_array)){}
+          else{game.finished()};
           if(game.liveBoard == true){
             computer_move = false;
             game.computerMove();
@@ -132,6 +132,7 @@ function win_check(moves){
     if(to_win.length == 0){
       alert("The player won!");
       game.liveBoard = false;
+      return true
     };
   };
 };
